@@ -1,5 +1,8 @@
 <?php
 require_once('./conn.php');
+require_once('./Parsedown.php');
+$Parsedown = new Parsedown();
+$Parsedown->setSafeMode(true);
 session_start();
 
 $nickname;
@@ -38,8 +41,9 @@ if (!$result) {
     <title>留言板</title>
   </head>
   <body>
-    <header class="warning">
-      <h3>練習用，請勿使用真實的帳號密碼!</h3>
+    <header >
+      <h3 class="warning">練習用，請勿使用真實的帳號密碼!</h3>
+      <h3 class="light">本留言板支援 Markdown 格式</h3>
     </header>
     <main class="board">
       <section class="board__login">
@@ -126,9 +130,9 @@ if (!$result) {
               alt="avatar"
             />
           </div>
-          <p>
-          <?php echo htmlspecialchars($row["content"]) ?>
-          </p>
+          <div class="p">
+          <?php echo  $Parsedown->text($row["content"]) ?>
+          </div>
         </div>
       <?php }?>
       </section>

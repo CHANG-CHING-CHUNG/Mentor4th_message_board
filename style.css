@@ -4,8 +4,26 @@
   box-sizing: border-box;
 }
 
+img {
+  width: 100%;
+}
+
 button {
   cursor: pointer;
+}
+
+pre {
+  white-space: pre-line;
+  background: #333;
+  border: 1px solid #333;
+  border-radius: 3px;
+  color: #555;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+code {
+  color: white;
 }
 
 .warning {
@@ -13,9 +31,20 @@ button {
   background-color: #f2dede;
   border-color: #ebccd1;
   padding: 15px;
-  margin-bottom: 20px;
   border: 1px solid transparent;
-  border-radius: 4px;
+  text-align: center;
+  font-family: "Noto Sans TC", sans-serif;
+  display: block;
+}
+
+.light {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
   text-align: center;
   font-family: "Noto Sans TC", sans-serif;
   display: block;
@@ -155,6 +184,7 @@ a.login-btn {
   margin-bottom: 45px;
   flex-wrap: wrap;
   color: #808080;
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .board__user-info {
@@ -163,7 +193,7 @@ a.login-btn {
   padding-right: 10px;
 }
 
-.board__user-comment p {
+.board__user-comment div.p {
   background-color: #f3f3f3;
   line-height: 1.5;
   padding: 18px 22px;
@@ -173,7 +203,7 @@ a.login-btn {
   white-space: pre-line;
 }
 
-.board__user-comment p:after {
+.board__user-comment div.p:after {
   content: "";
   position: absolute;
   width: 15px;
