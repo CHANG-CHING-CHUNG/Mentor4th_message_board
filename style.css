@@ -8,6 +8,47 @@ img {
   width: 100%;
 }
 
+.pages {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  margin-bottom: 1rem;
+}
+
+.page {
+  font-size: 25px;
+  margin: 10px;
+  cursor: pointer;
+  display: none;
+}
+
+.dot {
+  font-size: xx-large;
+}
+
+.current {
+  color: red;
+  display: block;
+}
+.pages .prev,
+.pages .next {
+  margin: 10px;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.pages .prev:hover,
+.pages .next:hover {
+  color: #57b846;
+  text-decoration: underline;
+}
+
+.show {
+  display: block;
+}
+
 button {
   cursor: pointer;
 }
@@ -42,7 +83,7 @@ code {
   background-color: #fff3cd;
   border-color: #ffeeba;
   position: relative;
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
   text-align: center;
@@ -176,6 +217,7 @@ a.login-btn {
   max-width: 800px;
   width: 100%;
   margin: 50px auto;
+  margin-bottom: 0px;
   padding: 10px;
 }
 

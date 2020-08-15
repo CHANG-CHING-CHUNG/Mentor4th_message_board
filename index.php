@@ -1,4 +1,7 @@
 <?php
+if (empty($_GET['page'])) {
+  header('Location: ./index.php?page=1');
+}
 require_once('./conn.php');
 require_once('./Parsedown.php');
 $Parsedown = new Parsedown();
@@ -117,25 +120,48 @@ if (!$result) {
       </section>
       <hr class="hr" />
       <section id="main" class="board__comments">
-      <?php while ($row = $result->fetch_assoc()) { ?>
-        <div class="board__user-comment">
-          <div class="board__user-info">
-            <span class="nickname"><?php echo htmlspecialchars($row["nickname"]) ?></span>
-            <span class="time"><?php echo htmlspecialchars($row["created_at"]) ?></span>
-          </div>
-          <div class="avatar">
-            <img
-              class="avatar-img"
-              src=""
-              alt="avatar"
-            />
-          </div>
-          <div class="p">
-          <?php echo  $Parsedown->text($row["content"]) ?>
-          </div>
-        </div>
-      <?php }?>
+      <?php 
+          $allRows = $result->fetch_all(MYSQLI_ASSOC);
+          $length = ceil(count($allRows) / 20);
+          $base = 19;
+          $start = 0;
+          $offset = $base;
+          if (!empty($_GET['page'])) {
+            if ( ((int)$_GET['page'] < 0) || ((int)$_GET['page'] > $length + 1)) {
+              header('Location: ./index.php?page=1');
+            } else {
+              $start = ($_GET['page'] * $base) - 19;
+              $offset = ($_GET['page'] * $base);
+              
+            }
+          }
+          $counter = 0;
+          for ($i=$start; $i <= $offset; $i+=1) {
+            if ($i === count($allRows)) {
+            break;
+            }
+              echo '<div class="board__user-comment">';
+              echo  '<div class="board__user-info">';
+              echo    '<span class="nickname">'  . htmlspecialchars($allRows[$i]["nickname"]) . '</span>';
+              echo    '<span class="time">' . htmlspecialchars($allRows[$i]["created_at"]) . '</span>';
+              echo  '</div>';
+              echo  '<div class="avatar">';
+              echo    '<img class="avatar-img" src="" alt="avatar"/>';
+              echo  '</div>';
+              echo  '<div class="p">';
+              echo    $Parsedown->text($allRows[$i]["content"]);
+              echo  '</div>';
+              echo '</div>';
+          }
+      ?>
       </section>
+      <div class="pages">
+        <div class="prev">上一頁</div>
+        <?php for($i=0; $i<=$length; $i+=1) { ?>
+          <div class="page" data-page=<?php echo $i+1?>><?php echo $i + 1;?></div>
+        <?php } ?>
+        <div class="next">下一頁</div>
+      </div>
     </main>
     <script src="app.js"></script>
   </body>
