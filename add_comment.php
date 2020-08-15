@@ -8,7 +8,7 @@ if (!empty($_SESSION['nickname']) && !empty($_POST['comment'])) {
   $nickname = $_SESSION['nickname'];
   $comment = $_POST['comment'];
 } else {
-  header("Location: index.php?errCode=1");
+  header("Location: index.php?page=1&errCode=1");
   die("請檢查資料");
 }
 
@@ -20,7 +20,7 @@ if ($stmt = $conn->prepare($sql)) {
   $stmt->bind_param("ss",$nickname,$comment);
   $stmt->execute();
   $stmt->close();
-  header("Location: ./index.php");
+  header("Location: ./index.php?page=1");
 } else {
   die("Failed" . $conn->error);
 }

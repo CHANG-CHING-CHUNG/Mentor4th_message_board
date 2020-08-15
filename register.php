@@ -58,6 +58,9 @@ session_start();
           <button class="login-btn">
             送出
           </button>
+          <a class="login-btn" href="./index.php?page=1">
+            回到首頁
+          </a>
         </div>
         </form>
       </section>

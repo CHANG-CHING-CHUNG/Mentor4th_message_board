@@ -78,6 +78,10 @@ code {
   display: block;
 }
 
+span.warning {
+  margin-bottom: 1rem;
+}
+
 .light {
   color: #856404;
   background-color: #fff3cd;

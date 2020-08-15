@@ -2,5 +2,5 @@
 require_once('./conn.php');
 session_start();
 session_destroy();
-header("Location: ./index.php");
+header("Location: ./index.php?page=1");
 ?>

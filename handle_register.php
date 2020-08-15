@@ -31,7 +31,7 @@ if ($stmt = $conn->prepare($sql)) {
     }
   }
   $stmt->close();
-  header("Location: ./index.php");
+  header("Location: ./index.php?page=1");
 } else {
   header("Location: register.php?errCode=3");
   die("請檢查資料");

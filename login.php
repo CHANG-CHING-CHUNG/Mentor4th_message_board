@@ -8,7 +8,7 @@ if (!empty($_POST['username']) || !empty($_POST['password'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
 } else {
-  header("Location: index.php?errCode=1");
+  header("Location: index.php?page=1&errCode=1");
   die("資料不齊全");
 }
 
@@ -25,13 +25,13 @@ if ($stmt = $conn->prepare($sql)) {
       $_SESSION['nickname'] = $nickname;
       $_SESSION['username'] = $name;
       $stmt->close();
-      header("Location: ./index.php");
+      header("Location: ./index.php?page=1");
   } else {
-    header("Location: ./index.php?errCode=2");
+    header("Location: ./index.php?page=1&errCode=2");
     die($conn->error);
   }
 } else {
-  header("Location: ./index.php?errCode=2");
+  header("Location: ./index.php?page=1&errCode=2");
     die($conn->error);
 }
 
