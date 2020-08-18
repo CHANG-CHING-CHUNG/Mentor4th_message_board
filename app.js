@@ -136,20 +136,20 @@ function init() {
 
   function changePage(e) {
     const dataPage = e.target.dataset.page;
-    // const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
-    const location = `http://localhost/new-board/index.php?page=${dataPage}`;
+    const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
+    // const location = `http://localhost/new-board/index.php?page=${dataPage}`;
     window.location.href = location;
   }
   function toPrevPage(targetPage) {
     const dataPage = targetPage.dataset.page;
-    // const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
-    const location = `http://localhost/new-board/index.php?page=${dataPage}`;
+    const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
+    // const location = `http://localhost/new-board/index.php?page=${dataPage}`;
     window.location.href = location;
   }
   function toNextPage(targetPage) {
     const dataPage = targetPage.dataset.page;
-    // const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
-    const location = `http://localhost/new-board/index.php?page=${dataPage}`;
+    const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
+    // const location = `http://localhost/new-board/index.php?page=${dataPage}`;
     window.location.href = location;
   }
 
