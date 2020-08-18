@@ -21,8 +21,9 @@ session_start();
     <title>留言板</title>
   </head>
   <body>
-    <header class="warning">
-      <h3>練習用，請勿使用真實的帳號密碼!</h3>
+    <header>
+      <h3 class="warning">練習用，請勿使用真實的帳號密碼!</h3>
+      <h3 class="light">本留言板支援 Markdown 格式</h3>
     </header>
     <main class="board">
      <section class="board__login">

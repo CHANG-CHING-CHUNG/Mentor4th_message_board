@@ -8,7 +8,7 @@ $password;
 if (!empty($_POST['nickname']) && !empty($_POST['username'] && !empty($_POST['password']))) {
   $nickname = $_POST['nickname'];
   $username = $_POST['username'];
-  $password = $_POST['password'];
+  $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 } else {
   header("Location: register.php?errCode=3");

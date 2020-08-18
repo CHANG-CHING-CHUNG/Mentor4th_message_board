@@ -15,8 +15,9 @@ if (!empty($_SESSION['nickname']) && !empty($_SESSION['username'])) {
   $username = $_SESSION['username'];
 }
 
-$sql = "SELECT nickname, content, created_at from John_comments ORDER by id desc";
-// $sql = "SELECT nickname, content, created_at from comments ORDER by id desc";
+
+$sql = "SELECT C.id as id, U.nickname as nickname, C.username as username, C.content as content, C.created_at as created_at from John_comments as C  left join John_users as U on C.username = U.username WHERE C.is_deleted IS null ORDER by C.id desc";
+// $sql = "SELECT C.id as id, U.nickname as nickname, C.username as username, C.content as content, C.created_at as created_at from comments as C  left join users as U on C.username = U.username WHERE C.is_deleted IS null ORDER by C.id desc";
 
 $result = $conn->query($sql);
 
@@ -40,6 +41,7 @@ if (!$result) {
       type="text/css"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css" />
     <title>留言板</title>
   </head>
@@ -91,9 +93,15 @@ if (!$result) {
           </div>
         </form>
       <?php } else { ?>
+        <a class="change-btn wd-150 update-nickname">更改暱稱</a>
+        <form class="update__nickname-form hide" method="POST" action="handle_update_nickname.php">
+          <input class="update__nickname-input" type="text" name="nickname"/>
+          <button class="update-btn">送出</button>
+        </form>
         <form class="board__type-comment" action="add_comment.php" method="POST">
           <span class="board__type-comment-title">
-            Hi~! <span class="username"><?php echo htmlspecialchars($nickname)?></span> 留下你想說的話
+            Hi~! <span class="nickname"><?php echo htmlspecialchars($nickname)?></span>
+            <div class="text">留下你想說的話</div>
           </span>
           <?php
            if (!empty($_GET['errCode'])) {
@@ -123,26 +131,32 @@ if (!$result) {
       <?php 
           $allRows = $result->fetch_all(MYSQLI_ASSOC);
           $length = ceil(count($allRows) / 20);
+          if ($length == 0) {
+            $length = 1;
+          }
           $base = 19;
           $start = 0;
           $offset = $base;
+          
           if (!empty($_GET['page'])) {
-            if ( ((int)$_GET['page'] < 0) || ((int)$_GET['page'] > $length + 1)) {
+            if ( ((int)$_GET['page'] < 1) || ((int)$_GET['page'] > $length)) {
               header('Location: ./index.php?page=1');
             } else {
               $start = ($_GET['page'] * $base) - 19;
               $offset = ($_GET['page'] * $base);
-              
             }
           }
-          $counter = 0;
+          if ((int)$_GET['page'] > 1) {
+            $start += 1;
+          }
           for ($i=$start; $i <= $offset; $i+=1) {
             if ($i === count($allRows)) {
             break;
             }
               echo '<div class="board__user-comment">';
               echo  '<div class="board__user-info">';
-              echo    '<span class="nickname">'  . htmlspecialchars($allRows[$i]["nickname"]) . '</span>';
+              echo    '<span class="nickname">'  . htmlspecialchars($allRows[$i]["nickname"]). '</span>';
+              echo    '<span class="username">' .'@('.htmlspecialchars($allRows[$i]["username"]).')' .'</span>';
               echo    '<span class="time">' . htmlspecialchars($allRows[$i]["created_at"]) . '</span>';
               echo  '</div>';
               echo  '<div class="avatar">';
@@ -151,13 +165,19 @@ if (!$result) {
               echo  '<div class="p">';
               echo    $Parsedown->text($allRows[$i]["content"]);
               echo  '</div>';
+              if ($allRows[$i]["username"] === $username) {
+                echo '<div class="edit_btn-section">';
+                echo  '<a href=update_comment.php?id='. htmlspecialchars($allRows[$i]["id"]).' ' . 'class="update_comment-btn"><i class="fas fa-edit"></i></a>';
+                echo  '<a href=handle_delete_comment.php?id='. htmlspecialchars($allRows[$i]["id"]).' ' . 'class="update_comment-btn"><i class="fas fa-trash-alt"></i></i></a>';
+                echo '</div>';
+              }
               echo '</div>';
           }
       ?>
       </section>
       <div class="pages">
         <div class="prev">上一頁</div>
-        <?php for($i=0; $i<=$length; $i+=1) { ?>
+        <?php for($i=0; $i<=$length -1; $i+=1) { ?>
           <div class="page" data-page=<?php echo $i+1?>><?php echo $i + 1;?></div>
         <?php } ?>
         <div class="next">下一頁</div>

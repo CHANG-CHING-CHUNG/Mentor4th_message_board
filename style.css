@@ -67,6 +67,10 @@ code {
   color: white;
 }
 
+.hide {
+  display: none;
+}
+
 .warning {
   color: #a94442;
   background-color: #f2dede;
@@ -76,6 +80,7 @@ code {
   text-align: center;
   font-family: "Noto Sans TC", sans-serif;
   display: block;
+  border-radius: 10px;
 }
 
 span.warning {
@@ -158,9 +163,56 @@ i.input-icon {
   text-align: center;
 }
 
+.update-btn {
+  outline: none !important;
+  border: none;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #fff;
+  width: 100px;
+  height: 50px;
+  border-radius: 25px;
+  background: #57b846;
+  padding: 0 25px;
+  transition: all 0.4s;
+  text-decoration: none;
+  text-align: center;
+}
+.change-btn {
+  outline: none !important;
+  border: none;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #fff;
+  width: 100px;
+  height: 50px;
+  border-radius: 25px;
+  background: #57b846;
+  padding: 0 25px;
+  transition: all 0.4s;
+  text-decoration: none;
+  text-align: center;
+}
+
+.change-btn:hover {
+  background: #333333;
+}
+
+a.change-btn {
+  padding-top: 10px;
+  margin: auto;
+  margin-bottom: 1rem;
+  display: block;
+}
 a.login-btn {
   padding-top: 10px;
   display: block;
+}
+
+a.wd-150 {
+  width: 150px;
 }
 
 .login-btn:not(:first-child) {
@@ -193,6 +245,10 @@ a.login-btn {
 /* .board__type-comment {
   display: none;
 } */
+
+span.nickname {
+  color: orangered;
+}
 
 .board__type-comment-title {
   font-weight: bold;
@@ -283,4 +339,58 @@ a.login-btn {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+}
+
+.update__nickname-input {
+  padding: 6px 0;
+  display: block;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.update__nickname-form {
+  margin-bottom: 10px;
+}
+
+button.update-btn {
+  margin: auto;
+  display: block;
+}
+
+.username {
+  display: block;
+  color: #656c71;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 6px;
+}
+
+.text {
+  margin-top: 10px;
+}
+
+.fa-edit {
+  color: #57b846;
+  margin-left: 5px;
+}
+
+.fa-trash-alt {
+  color: #ff6868;
+}
+
+.fas {
+  font-size: 25px;
+}
+
+.edit_btn-section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.update_comment-btn {
+  margin-bottom: 2px;
 }
