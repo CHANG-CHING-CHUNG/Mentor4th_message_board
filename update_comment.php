@@ -1,6 +1,7 @@
 <?php
 
 require_once('./conn.php');
+require_once('./utilis.php');
 session_start();
 
 $nickname;
@@ -12,19 +13,46 @@ if (!empty($_SESSION['nickname']) && !empty($_SESSION['username']) && !empty($_G
   $id = (int)$_GET['id'];
 }
 
+$result_row = getUserRole($username);
 
-$sql = "SELECT content from John_comments where id = ? and username = ?";
-// $sql = "SELECT content from comments where id = ? and username = ?";
+$role_id =  $result_row['id'];
+$role_name = $result_row['role_name'];
+$role_add_post = $result_row['add_post'];
+$role_delete_self_post =  $result_row['delete_self_post'];
+$role_delete_any_post = $result_row['delete_any_post'];
+$role_edit_self_post = $result_row['edit_self_post'];
+$role_edit_any_post = $result_row['edit_any_post'];
 
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("is", $id, $username);
-$result = $stmt->execute();
 
-if (!$result) {
-  die("Error:" . $conn->error);
+if ($role_edit_any_post === 1) {
+  // $sql = "SELECT content from comments where id = ?";
+  $sql = "SELECT content from John_comments where id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $id);
+  $result = $stmt->execute();
+
+  if (!$result) {
+    die("Error:" . $conn->error);
+  }
+  $result = $stmt->bind_result($content);
+  $stmt->fetch();
+} else if ($role_edit_self_post === 1) {
+  $sql = "SELECT content from comments where id = ? and username = ?";
+  
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("is", $id, $username);
+  $result = $stmt->execute();
+  
+  if (!$result) {
+    die("Error:" . $conn->error);
+  }
+  $result = $stmt->bind_result($content);
+  $stmt->fetch();
+} else {
+  header("Location: ./index.php?page=1");
+  die("身份錯誤");
 }
-$result = $stmt->bind_result($content);
-$stmt->fetch();
+
 ?>
 
 <!DOCTYPE html>

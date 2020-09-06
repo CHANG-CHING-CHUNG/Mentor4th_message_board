@@ -4,26 +4,51 @@ if (empty($_GET['page'])) {
 }
 require_once('./conn.php');
 require_once('./Parsedown.php');
+require_once('./utilis.php');
 $Parsedown = new Parsedown();
 $Parsedown->setSafeMode(true);
 session_start();
 
 $nickname;
 $username;
-if (!empty($_SESSION['nickname']) && !empty($_SESSION['username'])) {
+$role;
+if (!empty($_SESSION['nickname']) && !empty($_SESSION['username']) && !empty($_SESSION['role'])) {
   $nickname = $_SESSION['nickname'];
   $username = $_SESSION['username'];
+  $role = $_SESSION['role'];
 }
 
 
-$sql = "SELECT C.id as id, U.nickname as nickname, C.username as username, C.content as content, C.created_at as created_at from John_comments as C  left join John_users as U on C.username = U.username WHERE C.is_deleted IS null ORDER by C.id desc";
-// $sql = "SELECT C.id as id, U.nickname as nickname, C.username as username, C.content as content, C.created_at as created_at from comments as C  left join users as U on C.username = U.username WHERE C.is_deleted IS null ORDER by C.id desc";
+
+// $sql = "SELECT C.id as id, U.nickname as nickname, C.username as username, C.content as content, C.created_at as created_at, U.role as role from comments as C  left join users as U on C.username = U.username WHERE C.is_deleted IS null ORDER by C.id desc";
+$sql = "SELECT C.id as id, U.nickname as nickname, C.username as username, C.content as content, C.created_at as created_at, U.role as role from John_comments as C  left join John_users as U on C.username = U.username WHERE C.is_deleted IS null ORDER by C.id desc";
 
 $result = $conn->query($sql);
 
 if (!$result) {
   die("Error:" . $conn->error);
 }
+
+$role_id =  0;
+$role_name = 0;
+$role_add_post = 0;
+$role_delete_self_post =  0;
+$role_delete_any_post = 0;
+$role_edit_self_post = 0;
+$role_edit_any_post = 0;
+$result_row = getUserRole($username);
+
+if (!empty($result_row)) {
+  $role_id =  $result_row['id'];
+  $role_name = $result_row['role_name'];
+  $role_chinese_name = $result_row['chinese_role_name'];
+  $role_add_post = $result_row['add_post'];
+  $role_delete_self_post =  $result_row['delete_self_post'];
+  $role_delete_any_post = $result_row['delete_any_post'];
+  $role_edit_self_post = $result_row['edit_self_post'];
+  $role_edit_any_post = $result_row['edit_any_post'];
+}
+
 
 ?>
 
@@ -90,6 +115,7 @@ if (!$result) {
             <a href="register.php" class="login-btn">
               註冊
             </a>
+
           </div>
         </form>
       <?php } else { ?>
@@ -101,6 +127,7 @@ if (!$result) {
         <form class="board__type-comment" action="add_comment.php" method="POST">
           <span class="board__type-comment-title">
             Hi~! <span class="nickname"><?php echo htmlspecialchars($nickname)?></span>
+            <span class="user_role"><?php echo htmlspecialchars("#".$role_chinese_name)?></span>
             <div class="text">留下你想說的話</div>
           </span>
           <?php
@@ -117,12 +144,19 @@ if (!$result) {
             cols="30"
             rows="10"
           ></textarea>
+          <?php if ($result_row['add_post'] !== 0 ) {?>
           <button class="login-btn">
             送出
           </button>
-          <a href="logout.php" class="login-btn">
+          <?php }?>
+          <a href="logout.php" class="logout-btn">
             登出
           </a>
+          <?php if ( !empty($role) && $role == "admin") { ?>
+              <a href="admin.php?page=1" class="login-btn">
+                管理員頁面
+              </a>
+            <?php }?>
         </form>
       <?php } ?>
       </section>
@@ -157,6 +191,9 @@ if (!$result) {
               echo  '<div class="board__user-info">';
               echo    '<span class="nickname">'  . htmlspecialchars($allRows[$i]["nickname"]). '</span>';
               echo    '<span class="username">' .'@('.htmlspecialchars($allRows[$i]["username"]).')' .'</span>';
+              if ($allRows[$i]["role"] === "admin"){
+                echo    '<span class="role">#管理員</span>';
+              }
               echo    '<span class="time">' . htmlspecialchars($allRows[$i]["created_at"]) . '</span>';
               echo  '</div>';
               echo  '<div class="avatar">';
@@ -165,11 +202,16 @@ if (!$result) {
               echo  '<div class="p">';
               echo    $Parsedown->text($allRows[$i]["content"]);
               echo  '</div>';
-              if ($allRows[$i]["username"] === $username) {
+              if ($allRows[$i]["username"] === $username ||  $role_edit_any_post === 1 || $role_delete_any_post === 1) {
                 echo '<div class="edit_btn-section">';
-                echo  '<a href=update_comment.php?id='. htmlspecialchars($allRows[$i]["id"]).' ' . 'class="update_comment-btn"><i class="fas fa-edit"></i></a>';
-                echo  '<a href=handle_delete_comment.php?id='. htmlspecialchars($allRows[$i]["id"]).' ' . 'class="update_comment-btn"><i class="fas fa-trash-alt"></i></i></a>';
+                if (($role_edit_self_post === 1 && $allRows[$i]["username"] === $username ) || $role_edit_any_post === 1) {
+                  echo  '<a href=update_comment.php?id='. htmlspecialchars($allRows[$i]["id"]).' ' . 'class="update_comment-btn"><i class="fas fa-edit"></i></a>';
+                }
+                if (($role_delete_self_post === 1 && $allRows[$i]["username"] === $username ) || $role_delete_any_post === 1) {
+                  echo  '<a href=handle_delete_comment.php?id='. htmlspecialchars($allRows[$i]["id"]).' ' . 'class="update_comment-btn"><i class="fas fa-trash-alt"></i></i></a>';
+                }
                 echo '</div>';
+                
               }
               echo '</div>';
           }

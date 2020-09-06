@@ -12,18 +12,19 @@ if (!empty($_POST['username']) || !empty($_POST['password'])) {
   die("資料不齊全");
 }
 
-$sql = "SELECT id,nickname,username,password from John_users WHERE username = ?";
-// $sql = "SELECT id,nickname,username,password from users WHERE username = ?";
+// $sql = "SELECT id,nickname,username,password,role from users WHERE username = ?";
+$sql = "SELECT id,nickname,username,password,role from John_users WHERE username = ?";
 
 if ($stmt = $conn->prepare($sql)) {
   $stmt->bind_param("s",$username);
   $stmt->execute();
-  $stmt->bind_result($id,$nickname,$name,$pass);
+  $stmt->bind_result($id,$nickname,$name,$pass,$role);
 
   if ($stmt->fetch()) {
     if (password_verify($password, $pass)) {
       $_SESSION['nickname'] = $nickname;
       $_SESSION['username'] = $name;
+      $_SESSION['role'] = $role;
       $stmt->close();
       header("Location: ./index.php?page=1");
     } else {
