@@ -17,19 +17,19 @@ document.addEventListener("DOMContentLoaded", (e) => {
   
   function changePage(e) {
     const dataPage = e.target.dataset.page;
-    const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
+    const location = `http://mentor-program.co/mtr04group2/John/week11/hw1-board/admin.php?page=${dataPage}`;
     // const location = `http://localhost/board11/admin.php?page=${dataPage}`;
     window.location.href = location;
   }
   function toPrevPage(targetPage) {
     const dataPage = targetPage.dataset.page;
-    const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
+    const location = `http://mentor-program.co/mtr04group2/John/week11/hw1-board/admin.php?page=${dataPage}`;
     // const location = `http://localhost/board11/admin.php?page=${dataPage}`;
     window.location.href = location;
   }
   function toNextPage(targetPage) {
     const dataPage = targetPage.dataset.page;
-    const location = `http://mentor-program.co/mtr04group2/John/week9/hw1-board/index.php?page=${dataPage}`;
+    const location = `http://mentor-program.co/mtr04group2/John/week11/hw1-board/admin.php?page=${dataPage}`;
     // const location = `http://localhost/board11/admin.php?page=${dataPage}`;
     window.location.href = location;
   }
